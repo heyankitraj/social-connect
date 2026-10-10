@@ -16,7 +16,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or reverse proxy)
+      // or allow any origin to match the EC2 IP/domain dynamically
+      callback(null, true);
+    },
     credentials: true,
   }),
 );
